@@ -10,5 +10,16 @@ namespace notat.Models
     {
         public string DescPicture { get; set; }
         public string SourcePicture { get; set; }
+
+        public Picture()
+        {
+
+        }
+
+        public Picture(string descPicture, string sourcePicture)
+        {
+            this.DescPicture = descPicture;
+            this.SourcePicture = sourcePicture;
+        }
     }
 }

@@ -3,12 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        
+        xmlns:q ="clr-namespace:notat.Converter"
         xmlns:local ="clr-namespace:notat.ButtonsCommand"
+        xmlns:l ="clr-namespace:notat.Models"
         Title="OurNote" Height="480" Width="600">
 
     <Window.Resources>
 
+        <l:PogodaInformacje x:Key="pogodaInformacje"/>
+        <q:CelciusToFahrenheitConverter x:Key="celciusToFahrenheitConverter"/>
         <DataTemplate x:Key="PhotoCell">
             <Image Height="60" Stretch="Uniform" Source="{Binding SourcePicture}" />
         </DataTemplate>
@@ -149,7 +152,8 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10.7"/>
                         <ColumnDefinition Width="118.9"/>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="59"/>
+                        <ColumnDefinition Width="67.4"/>
                         <ColumnDefinition Width="128"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
@@ -158,7 +162,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Viewbox Grid.Column="3" Grid.ColumnSpan="2" Margin="0,190,0.4,52.4" Grid.RowSpan="3" >
+                    <Viewbox Grid.Column="4" Grid.ColumnSpan="2" Margin="0,190,0,52.4" Grid.RowSpan="3" >
                         <Calendar Height="Auto" HorizontalAlignment="Stretch" Name="kalendarz" VerticalAlignment="Stretch" Width="auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" SelectionMode="MultipleRange" SelectedDatesChanged="kalendarz_SelectedDatesChanged">
                             <Calendar.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -169,7 +173,7 @@
                         </Calendar>
                     </Viewbox>
 
-                    <ListBox x:Name="listbox_wydarzenia" Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="15,0,15.4,0.4" Style="{StaticResource ListBoxOurStyle}" ItemContainerStyle="{StaticResource ListBoxItemContainerOurStyle}">
+                    <ListBox x:Name="listbox_wydarzenia" Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="15,0,15,0.4" Style="{StaticResource ListBoxOurStyle}" ItemContainerStyle="{StaticResource ListBoxItemContainerOurStyle}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
 
@@ -188,15 +192,15 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <TextBox x:Name="textbox_szczegoly" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,0,52.4"  AcceptsReturn="True" VerticalScrollBarVisibility="Visible" IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Path=cale_wydarzenie}">
+                    <TextBox x:Name="textbox_szczegoly" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,0,52.4"  AcceptsReturn="True" VerticalScrollBarVisibility="Visible" IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Path=cale_wydarzenie}">
                     </TextBox>
 
 
-                    <Button x:Name="przycisk_edycja_wydarzenia" Grid.Column="3" Grid.Row="2" Width="auto" Height="auto" Content="Edytuj" Margin="15,15.4" Padding="2" Command="{x:Static local:PrzyciskiWydarzenia.Edytuj}"/>
-                    <Button x:Name="przycisk_nowe_wydarzenie"  Content="Nowe wydarzenie" Margin="4.3,15.4,14.6,15.4" Padding="2" Grid.Column="1" Grid.Row="2" Click="przycisk_nowe_wydarzenie_Click">
+                    <Button x:Name="przycisk_edycja_wydarzenia" Grid.Column="4" Grid.Row="2" Width="auto" Height="auto" Content="Edytuj" Margin="15,15.4" Padding="2" Command="{x:Static local:PrzyciskiWydarzenia.Edytuj}"/>
+                    <Button x:Name="przycisk_nowe_wydarzenie"  Content="Nowe wydarzenie" Margin="4.6,15.4,14.6,15.4" Padding="2" Grid.Column="1" Grid.Row="2" Click="przycisk_nowe_wydarzenie_Click">
 
                     </Button>
-                    <Button x:Name="przycisk_usun_wydarzenie"  Content="Usuń wydarzenie" Margin="15.4,15.4,15,15.4" Padding="2" Grid.Column="2" Grid.Row="2" Command="{x:Static local:PrzyciskiWydarzenia.Usun}"/>
+                    <Button x:Name="przycisk_usun_wydarzenie"  Content="Usuń wydarzenie" Margin="15.4,15.4,15,15.4" Padding="2" Grid.Column="2" Grid.Row="2" Command="{x:Static local:PrzyciskiWydarzenia.Usun}" Grid.ColumnSpan="2"/>
 
 
                 </Grid>
@@ -322,8 +326,8 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Name="pogoda" Header="Pogoda" >
-                <Grid>
+            <TabItem Header="Pogoda" >
+                <Grid  x:Name="pogoda">
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                         <TextBlock FontSize="20" HorizontalAlignment="Center" Margin="10"  Text="Pogoda na dziś"></TextBlock>
                         <WrapPanel>
@@ -334,13 +338,14 @@
                             </Button>
                         </WrapPanel>
                         <TextBlock FontSize="20" x:Name="tb_miasto" Margin="10" Text="Białystok" HorizontalAlignment="Center"/>
-                        <WrapPanel>
-                            <TextBlock FontSize="20" Margin="10" Text="75°F" HorizontalAlignment="Left"/>
-                            <Image x:Name="img_obrazek_pogody" Height="40"  Width="40" HorizontalAlignment="Center"/>
-                            <TextBlock x:Name="tb_temperatura" FontSize="20" Margin="90,10" Text="25°C" HorizontalAlignment="Right"/>
+                        <WrapPanel Width="400" >
+                            <Label FontSize="20" Margin="50,10" Content="{Binding temp , Converter={StaticResource celciusToFahrenheitConverter} }" />
+                            <Image x:Name="img_obrazek_pogody" Margin="5,0" Height="50"  Width="50" HorizontalAlignment="Center"/>
+                            <TextBlock Margin="20,0"/>
+                            <TextBlock x:Name="tb_temperatura" FontSize="20" Margin="10,10" Text="{Binding temp}"/>
                         </WrapPanel>
 
-                        <Grid ShowGridLines="True" Height="100">
+                        <Grid Height="100">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -357,7 +362,7 @@
                             <TextBlock FontSize="15" Text="Cisnienie :" Grid.Row="1" Grid.Column="0"/>
                             <TextBlock FontSize="15" Text="Wiatr :" Grid.Row="2" Grid.Column="0"/>
 
-                            <TextBlock x:Name="tb_max_temperatura" FontSize="15"  Text="30°C" Grid.Row="0" Grid.ColumnSpan="2" Height="34" Margin="87,0,0.4,0" Grid.RowSpan="2" VerticalAlignment="Top"/>
+                            <TextBlock x:Name="tb_max_temperatura" FontSize="15"  Text="30°C" Grid.Row="0" Grid.Column="1" />
                             <TextBlock x:Name="tb_predkosc_wiatru" FontSize="15" Text="11 km/h" Grid.Row="1" Grid.Column="1" />
                             <TextBlock x:Name="tb_cisnienie" FontSize="15" Text="1020,6 hPa" Grid.Row="2" Grid.Column="1"/>
 
@@ -371,7 +376,7 @@
 
                         </Grid>
                     </StackPanel>
-                    
+
                     <Label x:Name="lbl_pogoda_informacja_o_bledzie" Visibility="Hidden" Content="Informacja o bledzie " Grid.Column="1" HorizontalAlignment="Left" Margin="156,35,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
@@ -457,20 +462,23 @@
                     <Canvas Grid.ColumnSpan="6" Grid.RowSpan="3" Margin="0,0,0.4,-0.4" >
                         <Canvas x:Name="addPictureDetails" Background="#FFFFDAAE" Height="267" Canvas.Left="150" Canvas.Top="80" Width="255">
                             <GroupBox Header="Dodawanie" Canvas.Left="10" Canvas.Top="10" Height="243" Width="238">
-                                <Grid>
-                                    <Label Content="Dodaj opis:" Margin="10,10,10,184.8"/>
-                                    <TextBox x:Name="DescPictureTextBox" Margin="10,40,10,110" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
-                                    <Label Content="Zdjęcie:" HorizontalAlignment="Left" Margin="10,119,0,0" VerticalAlignment="Top" Width="53" RenderTransformOrigin="0.509,-0.556"/>
-                                    <Button x:Name="AddPictureLink" Content="Przeglądaj..." HorizontalAlignment="Left" Margin="68,125,0,0" VerticalAlignment="Top" Width="94" Click="AddPictureLink_Click"/>
-                                    <Label x:Name="PictureLink" Content="{Binding Path=SourcePucture}" RenderTransformOrigin="2.67,0.679" Margin="10,150,9.6,36.8"/>
-                                    <Button x:Name="AddPictureButton" Content="Dodaj" HorizontalAlignment="Left" Margin="141,189,0,0" VerticalAlignment="Top" Width="75" Click="AddPicture_Click"/>
-                                </Grid>
+                                <StackPanel Margin="5">
+                                    <WrapPanel/>
+                                    <Label Content="Dodaj opis:"/>
+                                    <TextBox x:Name="DescPictureTextBox" MinHeight="70" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+                                    <WrapPanel Margin="0,5">
+                                        <Label Content="Zdjęcie:"/>
+                                        <Button x:Name="AddPictureLink" Content="Przeglądaj..." Click="AddPictureLink_Click"/>
+                                        <Label x:Name="PictureLink" Content="{Binding Path=SourcePucture}" Height="25" Width="auto"/>
+                                    </WrapPanel>
+                                    <Button x:Name="AddPictureButton" Content="Dodaj" HorizontalAlignment="Right" Margin="5" Width="75" Click="AddPicture_Click" />
+                                </StackPanel>
                             </GroupBox>
                         </Canvas>
                         <Label Background="#CEF2D6" Height="918" Width="56" Canvas.Left="-7" MouseLeftButtonDown="ClearActivityButtonsPicturePanel">
                             <Grid Height="338" Width="46">
                                 <Button Height="32" Width="34"  Margin="10,60,2,246" Command="{x:Static local:PictureCommand.Add}">
-                                    <Image Height="22"  Stretch="Fill" Width="24" Source="pictures/addContact.png"/>
+                                    <Image Height="22"  Stretch="Fill" Width="24" Source="pictures/addPicture.png"/>
                                 </Button>
                                 <Button Height="32" Width="34" Margin="10,240,2,66" RenderTransformOrigin="0.471,0.562" Command="{x:Static local:PictureCommand.Delete}" Click="DeletePicture_Click" >
                                     <Image Height="22"  Stretch="Fill" Width="24" Source="pictures/deleteContact.png"/>

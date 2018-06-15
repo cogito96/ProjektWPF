@@ -19,11 +19,12 @@ namespace notat
         {
             InitializeComponent();
             LogingStart();
+          
             listbox_contact.ItemsSource = contactsList;
             listbox_picture.ItemsSource = pictureList;
 
-            //FileRead();
             getPogoda("Bialystok");
+            pogoda.DataContext = pogodaInformacje.main;
         }
 
 
@@ -45,5 +46,6 @@ namespace notat
 
 
         }
+
     }
 }

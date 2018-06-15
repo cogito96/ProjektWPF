@@ -62,6 +62,8 @@
     <Compile Include="ButtonsCommand\PictureCommand.cs" />
     <Compile Include="ButtonsCommand\PrzyciskiWydarzenia.cs" />
     <Compile Include="ButtonsCommand\UstawieniaPrzycisk.cs" />
+    <Compile Include="Converter\AddProcentConvert.cs" />
+    <Compile Include="Converter\CelciusToFahrenheitConverter.cs" />
     <Compile Include="Models\Picture.cs" />
     <Compile Include="WindowsPartial\MainWindowPogoda.cs" />
     <Compile Include="Models\Contact.cs" />
@@ -167,6 +169,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GaleriaZdjec\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pictures\addPicture.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

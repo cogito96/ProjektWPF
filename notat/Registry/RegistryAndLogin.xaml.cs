@@ -74,7 +74,7 @@ namespace notat.Registry
                 lolo = nowy.CreateLogin(LoginAddBox.Text, PassAddBox.Text);
                 if (lolo.User != "Error!")
                 {
-                    System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + @"\Zdjecia\" + lolo.User);
+                    System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + @"\galeriaZdjec\" + lolo.User);
                     Zamkniencie = true;
                     DialogResult = true;
                 }

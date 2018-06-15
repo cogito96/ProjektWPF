@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjektWPF.Models
+namespace notat.Models
 {
-    class PogodaInformacje
+    public class PogodaInformacje
     {
+
         public class coord
         {
             public double lon { get; set; }
@@ -27,13 +29,35 @@ namespace ProjektWPF.Models
             public string icon { get; set; }
         }
 
-        public class main
+        public class main : INotifyPropertyChanged
         {
             public double temp { get; set; }
             public double temp_min { get; set; }
             public double temp_max { get; set; }
             public int humidity { get; set; }
             public double pressure { get; set; }
+
+            //public double temp { get; set; }
+            //public double Temp
+            //{
+            //    get { return temp; }
+            //    set
+            //    {
+            //        temp = value;
+            //        OnPropertyChanged("Temp");
+            //    }
+            //}
+
+
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            protected void OnPropertyChanged(string name)
+            {
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
+
         }
 
         public class wind

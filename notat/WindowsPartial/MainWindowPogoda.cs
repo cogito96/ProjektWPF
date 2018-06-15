@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using notat.Models;
-using ProjektWPF.Models;
+using notat.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -15,7 +15,8 @@ namespace notat
     public partial class MainWindow : Window
     {
         ObservableCollection<Contact> contactsList;
-        
+        PogodaInformacje.root pogodaInformacje;
+
         void getPogoda(string miasto)
         {
             using (WebClient web = new WebClient())
@@ -25,7 +26,7 @@ namespace notat
                 {
                     var json = web.DownloadString(url);
                     var wynik = JsonConvert.DeserializeObject<PogodaInformacje.root>(json);
-                    PogodaInformacje.root pogodaInformacje = wynik;
+                    pogodaInformacje = wynik;
 
                     tb_predkosc_wiatru.Text = string.Format("{0}" + "m/s", pogodaInformacje.wind.speed);
                     tb_zachmurzenie.Text = string.Format("{0}" + "%", pogodaInformacje.clouds.all);
@@ -38,6 +39,7 @@ namespace notat
                     img_obrazek_pogody.Source = setIcon(pogodaInformacje.weather[0].icon);
 
                     lbl_pogoda_informacja_o_bledzie.Visibility = Visibility.Hidden;
+                    pogoda.DataContext = pogodaInformacje.main;
                 }
                 catch
                 {
@@ -65,6 +67,7 @@ namespace notat
                 getPogoda(textBox_szukaneMiasto.Text);
             }
         }
+
     }
 
 

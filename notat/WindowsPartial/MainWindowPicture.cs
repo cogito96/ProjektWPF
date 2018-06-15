@@ -22,27 +22,39 @@ namespace notat
 
         private void AddPicture(object sender, ExecutedRoutedEventArgs e)
         {
-            addPictureDetails.Visibility = Visibility.Visible;
+            SetVisibleButtonsPicturePanel();
         }
 
         private void DeletePicture_Click(object sender, RoutedEventArgs e)
         {
+            addPictureDetails.Visibility = Visibility.Hidden;
             MessageBoxResult potwierdzenie = MessageBox.Show("Chcesz usunąć wybrane zdjecie?", "Potwierdzenie", MessageBoxButton.YesNo);
             switch (potwierdzenie)
             {
                 case MessageBoxResult.Yes:
 
-                    //using(Picture removePicture = ((Picture)listbox_picture.SelectedItem))
-                    //{
-
-                    //}
-                    //string removePictureInFolderSource = removePicture.SourcePicture;
-                    //pictureList.Remove(removePicture);
+                    Picture removePicture = ((Picture)listbox_picture.SelectedItem);
+                    string removePictureInFolderSource = removePicture.SourcePicture;
+                    pictureList.Remove(removePicture);
                     zapis_zdjec(ZdjeciaPlik);
-                    wczytanie_zdjec(ZdjeciaPlik);
-                    
-                    System.IO.File.Delete(removePictureInFolderSource);
+                    DeleteDirectory(removePictureInFolderSource);
                     break;
+            }
+        }
+
+        private void DeleteDirectory(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                foreach (string file in Directory.GetFiles(path))
+                {
+                    File.Delete(file);
+                }
+                foreach (string directory in Directory.GetDirectories(path))
+                {
+                    DeleteDirectory(directory);
+                }
+                Directory.Delete(path);
             }
         }
 
@@ -70,6 +82,8 @@ namespace notat
         {
             addPictureDetails.Visibility = Visibility.Hidden;
         }
+        
+ 
 
 
 
@@ -77,11 +91,15 @@ namespace notat
         {
             var login = Uzytkownik.User;
             var aa = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + @"\galeriaZdjec\" + login + @"\" + nazwa_pliku;
-            if (sourcePicture != "")
+            if (!string.IsNullOrEmpty(sourcePicture))
             {
                 try
                 {
                     System.IO.File.Copy(sourcePicture, System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + @"\galeriaZdjec\" + login + @"\" + nazwa_pliku);
+                    DescPictureTextBox.Clear();
+                    PictureLink.Content = "";
+
+                    addPictureDetails.Visibility = Visibility.Hidden;
                 }
                 catch (System.IO.IOException)
                 {
@@ -94,11 +112,7 @@ namespace notat
             {
                  MessageBox.Show("Nie wybrales zdjecia");
             }
-            Picture picture = new Picture();
-
-            picture.DescPicture = DescPictureTextBox.Text;
-            picture.SourcePicture = sourcePicture;
-            pictureList.Add(picture);
+            pictureList.Add( new Picture(DescPictureTextBox.Text, sourcePicture));
 
             zapis_zdjec(ZdjeciaPlik);
 
@@ -129,6 +143,13 @@ namespace notat
             writer.Close();
         }
 
+        private void SetVisibleButtonsPicturePanel()
+        {
+            if (addPictureDetails.Visibility == Visibility.Hidden)
+                addPictureDetails.Visibility = Visibility.Visible;
+            else
+                addPictureDetails.Visibility = Visibility.Hidden;
 
+        }
     }
 }
