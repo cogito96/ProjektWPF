@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace notat
 {
@@ -20,9 +9,41 @@ namespace notat
     /// </summary>
     public partial class MainWindow : Window
     {
+        const string APPID = "65501c41938c0adfeffa7abf0eb6efb1";
+
+        String NoteFile;
+        String WydarzeniaPlik;
+        String KontaktyPlik;
+        String ZdjeciaPlik;
         public MainWindow()
         {
             InitializeComponent();
+            LogingStart();
+            listbox_contact.ItemsSource = contactsList;
+            listbox_picture.ItemsSource = pictureList;
+
+            //FileRead();
+            getPogoda("Bialystok");
+        }
+
+
+        private void FileRead()
+        {
+            StartUser();
+            try
+            {
+                ZdjeciaPlik = @"zdjeciaInformacje\" + Uzytkownik.Files + ".bin";
+                NoteFile = @"notatki\" + Uzytkownik.Files + ".bin";
+                WydarzeniaPlik = @"wydarzenia\" + Uzytkownik.Files + ".bin";
+                KontaktyPlik = @"kontakty\" + Uzytkownik.Files + ".bin"; 
+                inicjalizacja_systemu_wydarzen(WydarzeniaPlik);
+                wczytanie_kontaktow(KontaktyPlik);
+                wczytanie_zdjec(ZdjeciaPlik);
+                User(NoteFile);
+            }
+            catch (NullReferenceException) { Close(); }
+
+
         }
     }
 }

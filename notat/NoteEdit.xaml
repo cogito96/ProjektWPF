@@ -1,0 +1,29 @@
+﻿<Window x:Class="notat.NoteEdit"
+     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Edycja" Height="358.8" Width="267.6"
+         Background="#CEF2D6"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"/>
+            <RowDefinition Height="187*"/>
+            <RowDefinition Height="38"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="130"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Name="ZapisywanieBttn" Content="Zapisz" Grid.Column="0" Margin="10,5,10,5" Click="Zapisywanie"/>
+            <Button Name ="AnulujBttn" Content="Anuluj" Grid.Column="1" Margin="10,5,10,5" Click="AnulujBttn_Click"/>
+
+        </Grid>
+        <TextBox Name ="titleEdit" TextWrapping="Wrap" Text="Tytuł" Margin="20,10,20,10"/>
+        <RichTextBox Name="descEdit" Grid.Row="1" Margin="20,13,20,7" VerticalScrollBarVisibility="Auto">
+            <FlowDocument Language="pl"/>
+        </RichTextBox>
+
+    </Grid>
+</Window>

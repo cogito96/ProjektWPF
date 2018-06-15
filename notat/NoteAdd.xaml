@@ -1,0 +1,31 @@
+﻿<Window x:Class="notat.NoteAdd"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Dodawanie" Height="358.8" Width="267.6"
+        Background="#CEF2D6"
+        >
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"/>
+            <RowDefinition Height="187*"/>
+            <RowDefinition Height="38"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="130"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Name="Dodaj" Content="Dodaj" Grid.Column="0" Margin="10,5,10,5" Click="DodajNowaNotatke"/>
+            <Button Content="Anuluj" Grid.Column="1" Margin="10,5,10,5" Click="Button_Click"/>
+
+        </Grid>
+        <TextBox Name="TytulTxtbox" TextWrapping="Wrap" Text="Tytuł" Margin="20,10,20,10"/>
+        <RichTextBox Name="RichtxtboxTresc" HorizontalAlignment="Left" Grid.Row="1" Margin="20,10,20,10" VerticalScrollBarVisibility="Auto">
+            <FlowDocument Language="pl"/>
+        </RichTextBox>
+
+    </Grid>
+</Window>

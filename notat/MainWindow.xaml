@@ -4,20 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         
-        xmlns:local ="clr-namespace:notatnik_osobisty"
-        Title="Notatnik osobisty" Height="480" Width="575">
+        xmlns:local ="clr-namespace:notat.ButtonsCommand"
+        Title="OurNote" Height="480" Width="600">
 
     <Window.Resources>
 
         <DataTemplate x:Key="PhotoCell">
-            <Image Height="60" Stretch="Uniform" Source="{Binding sciezka_zdjecie}" />
+            <Image Height="60" Stretch="Uniform" Source="{Binding SourcePicture}" />
         </DataTemplate>
 
         <Style x:Key="ListBoxOurStyle" TargetType="ListBox">
-            <Setter Property="Background" Value="#fff4e4"></Setter>
+            <Setter Property="Background" Value="#CEF2D6"></Setter>
             <Style.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="DarkCyan"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="DarkCyan"/>
             </Style.Resources>
         </Style>
 
@@ -28,7 +26,7 @@
             <Setter Property="Padding" Value="1" />
             <Style.Triggers>
                 <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                    <Setter Property="Background" Value="Bisque" />
+                    <Setter Property="Background" Value="ForestGreen" />
                 </Trigger>
             </Style.Triggers>
 
@@ -38,7 +36,7 @@
 
     <Grid>
 
-        <TabControl Height="Auto" HorizontalAlignment="Stretch" Name="tabControl" VerticalAlignment="Stretch" Width="Auto" Grid.RowSpan="1" Background="#FFFFF2C5" MouseLeftButtonDown="tabControl_MouseLeftButtonDown">
+        <TabControl Height="Auto" HorizontalAlignment="Stretch" Name="tabControl" VerticalAlignment="Stretch" Width="Auto" Grid.RowSpan="1" Background="#CEF2D6" >
 
             <TabControl.Triggers>
                 <EventTrigger RoutedEvent="Calendar.Loaded">
@@ -52,10 +50,105 @@
             </TabControl.Triggers>
 
 
-            <TabItem Name="wydarzenia" Header="Wydarzenia" >
+
+
+
+
+            <TabItem Name="notatki" Header="Notatki">
+                <Grid DataContext="{Binding ElementName=WidocznaLista, Path=SelectedItem}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="105*"/>
+                        <ColumnDefinition Width="458*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="293*"/>
+                        <RowDefinition Height="48"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.ColumnSpan="2" Margin="0,0,0.4,47.6" Grid.RowSpan="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5*"/>
+                            <RowDefinition Height="29*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="261*"/>
+                            <ColumnDefinition Width="260*"/>
+                            <ColumnDefinition Width="20*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.ColumnSpan="2" Margin="0,0,0.6,0.4" Grid.RowSpan="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="43*"/>
+                                <RowDefinition Height="251*"/>
+                            </Grid.RowDefinitions>
+
+
+                            <Grid Margin="0,0,-261,0" Height="54" VerticalAlignment="Top" RenderTransformOrigin="1.002,0.544">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="0*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Name="WyszukianieTxtbox" Margin="20,10,97.6,10"  Text="Wyszukiwanie" IsMouseCapturedChanged="WyszukianieTxtbox_IsMouseCapturedChanged" TextChanged="WyszukianieTxtbox_TextChanged"
+                                    />
+                                <Grid Margin="471,0,-0.4,0" Grid.ColumnSpan="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="26*"/>
+                                        <RowDefinition Height="29*"/>
+                                    </Grid.RowDefinitions>
+                                    <RadioButton Name="WyszukiwanieTytul" Grid.Row="0" Content="Tytuł" Margin="0,3,-3,2.6" IsChecked="True" HorizontalAlignment="Right" Width="76"/>
+                                    <RadioButton Name ="WyszukiwanieData" Content="Data" Grid.Row="1" Margin="0,3.4,-3,3.4" HorizontalAlignment="Right" Width="76" />
+                                </Grid>
+                            </Grid>
+
+                            <ListBox Name ="WidocznaLista" Grid.Row="1" Margin="20,10,20,10" >
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="3">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="140"/>
+                                                <ColumnDefinition Width="70"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding Path=title,Mode=TwoWay}" Grid.Column="0"/>
+                                            <TextBlock Text="{Binding Path=data,Mode=TwoWay}" Grid.Column="1"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+
+                            </ListBox>
+                        </Grid>
+                        <TextBox Name="Podglad" Grid.Column="2" Margin="20.4,9.8,19.2,9.4" IsReadOnly="True"  Text="{Binding Path=desc,Mode=TwoWay}" VerticalScrollBarVisibility="Visible" Grid.Row="1" Grid.ColumnSpan="2">
+                        </TextBox>
+                    </Grid>
+                    <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0.4,0.4,-0.4" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="140"></ColumnDefinition>
+                            <ColumnDefinition Width="140"></ColumnDefinition>
+                            <ColumnDefinition Width="140"></ColumnDefinition>
+                            <ColumnDefinition Width="140"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Button Name="DodajNotatke" Content="Dodaj" Grid.Column="0" Margin="10,10,10,10" Click="DodajNotatke_Click"/>
+                        <Button Name="EdytujNotatke" Content="Edytuj" Grid.Column="1" Margin="10,10,10,10" 
+                                Command="{x:Static local:NoteButton.Edytuj}">
+
+                        </Button>
+                        <Button Name ="UsunNotatke" Content="Usuń" Grid.Column="2" Margin="10,10,10,10"
+                                Command="{x:Static local:NoteButton.Usun}"
+                                />
+                        <Button Content="Drukuj" Grid.Column="3" Margin="10,10,10,10"
+                                Command="{x:Static local:NoteButton.Drukuj}"
+                                />
+                    </Grid>
+                </Grid>
+
+
+
+            </TabItem>
+
+
+            <TabItem Name="Dziennik" Header="Dziennik" >
                 <Grid DataContext="{Binding ElementName=listbox_wydarzenia, Path=SelectedItem}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="10.7"/>
+                        <ColumnDefinition Width="118.9"/>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="128"/>
                         <ColumnDefinition Width="*"/>
@@ -65,18 +158,18 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Viewbox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" >
+                    <Viewbox Grid.Column="3" Grid.ColumnSpan="2" Margin="0,190,0.4,52.4" Grid.RowSpan="3" >
                         <Calendar Height="Auto" HorizontalAlignment="Stretch" Name="kalendarz" VerticalAlignment="Stretch" Width="auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" SelectionMode="MultipleRange" SelectedDatesChanged="kalendarz_SelectedDatesChanged">
                             <Calendar.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="#FFD4D4FF" Offset="0" />
-                                    <GradientStop Color="Bisque" Offset="1" />
+                                    <GradientStop Color="AliceBlue" Offset="0" />
+                                    <GradientStop Color="CadetBlue" Offset="1" />
                                 </LinearGradientBrush>
                             </Calendar.Background>
                         </Calendar>
                     </Viewbox>
 
-                    <ListBox x:Name="listbox_wydarzenia" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="15,0" Style="{StaticResource ListBoxOurStyle}" ItemContainerStyle="{StaticResource ListBoxItemContainerOurStyle}">
+                    <ListBox x:Name="listbox_wydarzenia" Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="15,0,15.4,0.4" Style="{StaticResource ListBoxOurStyle}" ItemContainerStyle="{StaticResource ListBoxItemContainerOurStyle}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
 
@@ -95,98 +188,23 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <TextBox x:Name="textbox_szczegoly" Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,0,0" Text="{Binding Path=cale_wydarzenie}" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" IsReadOnly="True" TextWrapping="Wrap">
+                    <TextBox x:Name="textbox_szczegoly" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,0,52.4"  AcceptsReturn="True" VerticalScrollBarVisibility="Visible" IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Path=cale_wydarzenie}">
                     </TextBox>
 
-                    <Button x:Name="przycisk_edycja_wydarzenia" Grid.Column="2" Grid.Row="2" Width="auto" Height="auto" Content="Edytuj" Margin="15" Padding="2" Command="{x:Static local:PrzyciskiWydarzenia.Edytuj}"/>
-                    <Button x:Name="przycisk_nowe_wydarzenie"  Content="Nowe wydarzenie" Margin="15" Padding="2" Grid.Column="0" Grid.Row="2" Click="przycisk_nowe_wydarzenie_Click">
+
+                    <Button x:Name="przycisk_edycja_wydarzenia" Grid.Column="3" Grid.Row="2" Width="auto" Height="auto" Content="Edytuj" Margin="15,15.4" Padding="2" Command="{x:Static local:PrzyciskiWydarzenia.Edytuj}"/>
+                    <Button x:Name="przycisk_nowe_wydarzenie"  Content="Nowe wydarzenie" Margin="4.3,15.4,14.6,15.4" Padding="2" Grid.Column="1" Grid.Row="2" Click="przycisk_nowe_wydarzenie_Click">
 
                     </Button>
-                    <Button x:Name="przycisk_usun_wydarzenie"  Content="Usuń wydarzenie" Margin="15" Padding="2" Grid.Column="1" Grid.Row="2" Command="{x:Static local:PrzyciskiWydarzenia.Usun}"/>
+                    <Button x:Name="przycisk_usun_wydarzenie"  Content="Usuń wydarzenie" Margin="15.4,15.4,15,15.4" Padding="2" Grid.Column="2" Grid.Row="2" Command="{x:Static local:PrzyciskiWydarzenia.Usun}"/>
 
 
                 </Grid>
             </TabItem>
 
 
-
-            <TabItem Name="notatki" Header="Notatki">
-                <Grid DataContext="{Binding ElementName=WidocznaLista, Path=SelectedItem}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="293*"/>
-                        <RowDefinition Height="48"/>
-                    </Grid.RowDefinitions>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="280*"/>
-                            <ColumnDefinition Width="280*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="43*"/>
-                                <RowDefinition Height="251*"/>
-                            </Grid.RowDefinitions>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="197*"/>
-                                    <ColumnDefinition Width="83*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox Name="WyszukianieTxtbox" Margin="20,10,20,10" Grid.Column="0" Text="Wyszukiwanie" IsMouseCapturedChanged="WyszukianieTxtbox_IsMouseCapturedChanged" TextChanged="WyszukianieTxtbox_TextChanged"
-                                    >
-                                </TextBox>
-                                <Grid Grid.Column="1">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="21*"/>
-                                        <RowDefinition Height="21*"/>
-                                    </Grid.RowDefinitions>
-                                    <RadioButton Name="WyszukiwanieTytul" Grid.Row="0" Content="Tytuł" Margin="3" IsChecked="True"/>
-                                    <RadioButton Name ="WyszukiwanieData" Content="Data" Grid.Row="1" Margin="3" />
-                                </Grid>
-                            </Grid>
-
-                            <ListBox Name ="WidocznaLista" Grid.Row="1" Margin="20,10,20,10" Style="{StaticResource ListBoxOurStyle}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Margin="3">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="140"/>
-                                                <ColumnDefinition Width="70"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{Binding Path=tytul}" Grid.Column="0"/>
-                                            <TextBlock Text="{Binding Path=data}" Grid.Column="1"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-
-                            </ListBox>
-                        </Grid>
-                        <TextBox Name="Podglad" Grid.Column="1" Margin="20,10,20,10" IsReadOnly="True" Text="{Binding Path=tresc}" VerticalScrollBarVisibility="Visible">
-                        </TextBox>
-                    </Grid>
-                    <Grid Grid.Row="1" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="140"></ColumnDefinition>
-                            <ColumnDefinition Width="140"></ColumnDefinition>
-                            <ColumnDefinition Width="140"></ColumnDefinition>
-                            <ColumnDefinition Width="140"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Button Name="DodajNotatke" Content="Dodaj" Grid.Column="0" Margin="10,10,10,10" Click="DodajNotatke_Click"/>
-                        <Button Name="EdytujNotatke" Content="Edytuj" Grid.Column="1" Margin="10,10,10,10"
-                                Command="{x:Static local:PrzyciskiNotatek.Edytuj}">
-
-                        </Button>
-                        <Button Name ="UsunNotatke" Content="Usuń" Grid.Column="2" Margin="10,10,10,10"
-                                Command="{x:Static local:PrzyciskiNotatek.Usun}"
-                                />
-                        <Button Content="Drukuj" Grid.Column="3" Margin="10,10,10,10"
-                                Command="{x:Static local:PrzyciskiNotatek.Drukuj}"
-                                />
-                    </Grid>
-                </Grid>
-
-            </TabItem>
-            <TabItem Name="kontakty" Header="Kontakty" Height="20" VerticalAlignment="Top">
-                <Grid DataContext="{Binding ElementName=listbox_kontakty, Path=SelectedItem}">
+            <TabItem Name="kontakty" Header="Kontakty" Height="20" VerticalAlignment="Top" >
+                <Grid  DataContext="{Binding ElementName=listbox_contact, Path=SelectedItem}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="9"/>
                         <RowDefinition Height="313*"/>
@@ -196,27 +214,27 @@
                         <ColumnDefinition Width="56.8"/>
                         <ColumnDefinition Width="11.2"/>
                         <ColumnDefinition Width="13.6"/>
-                        <ColumnDefinition Width="427*"/>
+                        <ColumnDefinition Width="129*"/>
+                        <ColumnDefinition Width="304*"/>
                         <ColumnDefinition Width="48"/>
                     </Grid.ColumnDefinitions>
-                    <ListView  Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch" Margin="0.4,0.2,0.4,15.6" x:Name="listbox_kontakty"
-                  VerticalAlignment="Stretch" ItemsSource="{Binding lista_kontaktow}" FontSize="13" Style="{StaticResource ListBoxOurStyle}" Grid.RowSpan="2">
+                    <ListView  Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch" Margin="0.4,0.2,0.4,15.6" x:Name="listbox_contact"
+                  VerticalAlignment="Stretch" FontSize="13"  Grid.RowSpan="2" Grid.ColumnSpan="2">
                         <ListView.View>
                             <GridView>
-
                                 <GridViewColumn Width="100" Header="Imię"
-                                    DisplayMemberBinding="{Binding imie}" />
+                                    DisplayMemberBinding="{Binding FirstName}" />
                                 <GridViewColumn Width="100" Header="Nazwisko"
-                                    DisplayMemberBinding="{Binding nazwisko}" />
+                                    DisplayMemberBinding="{Binding LastName}" />
                                 <GridViewColumn Width="100" Header="Ksywa"
-                                    DisplayMemberBinding="{Binding ksywa}" />
-                                <GridViewColumn Width="auto" Header="Zdjęcie"
-                                    CellTemplate="{StaticResource PhotoCell}" />
+                                    DisplayMemberBinding="{Binding Nick}" />
+                                <GridViewColumn Width="auto" Header="Numer Telefonu"
+                                     DisplayMemberBinding="{Binding PhoneNumber}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <Canvas Grid.ColumnSpan="5" Grid.RowSpan="3" Margin="0,0,0.4,-0.4">
-                        <Canvas x:Name="CanGb" Background="#FFFFDAAE" Height="205" Canvas.Left="-393" Width="254" Canvas.Top="5" >
+                    <Canvas Grid.ColumnSpan="6" Grid.RowSpan="3" Margin="0,0,0.4,-0.4">
+                        <Canvas x:Name="searchContactDetails" Background="#FFFFDAAE" Height="205" Canvas.Left="150" Canvas.Top="80" Width="255" Visibility="Hidden"  >
                             <GroupBox Header="Wyszukiwanie" Canvas.Left="10" Canvas.Top="10" Height="185" Width="238">
                                 <Grid>
                                     <TextBox x:Name="WyszukiwanieImie" HorizontalAlignment="Left" Height="23" Margin="43,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180"/>
@@ -225,12 +243,11 @@
                                     <TextBox x:Name="WyszukiwanieNazwisko" HorizontalAlignment="Left" Height="23" Margin="67,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="156"/>
                                     <Label Content="Ksywka:" HorizontalAlignment="Left" Margin="0,69,0,0" VerticalAlignment="Top" Width="53"/>
                                     <TextBox x:Name="WyszukiwanieKsywka" HorizontalAlignment="Left" Height="23" Margin="53,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170"/>
-                                    <Button x:Name="WyszukiwaniePrzycick" Content="Wyszukaj" HorizontalAlignment="Left" Margin="141,131,0,0" VerticalAlignment="Top" Width="75" Click="WyszukiwaniePrzycick_Click"/>
-
+                                    <Button x:Name="WyszukiwaniePrzycick" Content="Wyszukaj" HorizontalAlignment="Left" Margin="141,131,0,0" VerticalAlignment="Top" Width="75" Click="SearchContact_Click" />
                                 </Grid>
                             </GroupBox>
                         </Canvas>
-                        <Canvas x:Name="CanGb2" Background="#FFFFDAAE" Height="273" Canvas.Left="-393" Canvas.Top="210" Width="258" >
+                        <Canvas x:Name="addContactDetails" Background="#FFFFDAAE" Height="267" Canvas.Left="150" Canvas.Top="80" Width="255" Visibility="Hidden" >
                             <GroupBox Header="Dodawanie" Canvas.Left="10" Canvas.Top="10" Height="243" Width="238">
                                 <Grid>
                                     <TextBox x:Name="DodawanieImie" HorizontalAlignment="Left" Height="23" Margin="43,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180"/>
@@ -239,69 +256,63 @@
                                     <TextBox x:Name="DodawanieNazwisko" HorizontalAlignment="Left" Height="23" Margin="67,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="156"/>
                                     <Label Content="Ksywka:" HorizontalAlignment="Left" Margin="0,69,0,0" VerticalAlignment="Top" Width="53"/>
                                     <TextBox x:Name="DodawanieKsywka" HorizontalAlignment="Left" Height="23" Margin="53,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170"/>
-                                    <Label Content="Zdjęcie:" HorizontalAlignment="Left" Margin="0,162,0,0" VerticalAlignment="Top" Width="53"/>
                                     <Label Content="Telefon:" HorizontalAlignment="Left" Margin="0,100,0,0" VerticalAlignment="Top" Width="53"/>
                                     <Label Content="E-mail:" HorizontalAlignment="Left" Margin="0,131,0,0" VerticalAlignment="Top" Width="53"/>
                                     <TextBox x:Name="DodawanieTelefon" HorizontalAlignment="Left" Height="23" Margin="58,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
                                     <TextBox x:Name="DodawanieEmail" HorizontalAlignment="Left" Height="23" Margin="58,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
-                                    <Button x:Name="Przegladanie" Content="Przeglądaj..." HorizontalAlignment="Left" Margin="55,162,0,0" VerticalAlignment="Top" Width="75" Click="Przegladanie_Click"/>
-                                    <Button x:Name="DodawaniePrzycisk" Content="Dodaj" HorizontalAlignment="Left" Margin="141,189,0,0" VerticalAlignment="Top" Width="75" Click="DodawaniePrzycisk_Click"/>
+                                    <Button x:Name="DodawaniePrzycisk" Content="Dodaj" HorizontalAlignment="Left" Margin="141,189,0,0" VerticalAlignment="Top" Width="75" Click="AddContact_Click"/>
                                 </Grid>
                             </GroupBox>
                         </Canvas>
-                        <Canvas x:Name="CanGb3" Background="#FFFFDAAE" Height="274" Canvas.Left="577" Canvas.Top="356" Width="255" >
+                        <Canvas x:Name="editContactDetails" Background="#FFFFDAAE" Height="267" Canvas.Left="150" Canvas.Top="80" Width="255" Visibility="Hidden">
                             <GroupBox Header="Edytowanie" Canvas.Left="10" Canvas.Top="10" Height="243" Width="238">
                                 <Grid>
-                                    <TextBox x:Name="EdytowanieImie" Text="{Binding Path=imie, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="58,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
+                                    <TextBox x:Name="EdytowanieImie"  Text="{Binding Path=FirstName, Mode=OneWay}"  HorizontalAlignment="Left" Height="23" Margin="58,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
                                     <Label Content="Imie:"  HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Height="23" Width="38"/>
                                     <Label Content="Nazwisko:" HorizontalAlignment="Left" Margin="0,38,0,0" VerticalAlignment="Top" Width="62"/>
-                                    <TextBox x:Name="EdytowanieNazwisko" Text="{Binding Path=nazwisko, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="67,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="156"/>
+                                    <TextBox x:Name="EdytowanieNazwisko" Text="{Binding Path=LastName, Mode=OneWay}"  HorizontalAlignment="Left" Height="23" Margin="67,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="156"/>
                                     <Label Content="Ksywka:" HorizontalAlignment="Left" Margin="0,0,0,126" VerticalAlignment="Bottom" Width="53"/>
-                                    <TextBox x:Name="EdytowanieKsywka" Text="{Binding Path=ksywa, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="58,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
-                                    <Label Content="Zdjęcie:" HorizontalAlignment="Left" Margin="0,162,0,0" VerticalAlignment="Top" Width="53"/>
+                                    <TextBox x:Name="EdytowanieKsywka" Text="{Binding Path=Nick, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="58,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
                                     <Label Content="Telefon:" HorizontalAlignment="Left" Margin="0,100,0,0" VerticalAlignment="Top" Width="53"/>
                                     <Label Content="E-mail:" HorizontalAlignment="Left" Margin="0,131,0,0" VerticalAlignment="Top" Width="53"/>
-                                    <TextBox x:Name="EdytowanieTelefon" Text="{Binding Path=telefon, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="58,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
-                                    <TextBox x:Name="EdytowanieEmail" Text="{Binding Path=mail, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="58,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
-                                    <Button x:Name="Przegladanie2" Content="Przeglądaj..." HorizontalAlignment="Left" Margin="55,162,0,0" VerticalAlignment="Top" Width="75" Click="Przegladanie_Click"/>
-                                    <Button x:Name="EdytowaniePrzycisk" Content="Edytuj" HorizontalAlignment="Left" Margin="141,189,0,0" VerticalAlignment="Top" Width="75" Click="EdytowaniePrzycisk_Click"/>
-
+                                    <TextBox x:Name="EdytowanieTelefon" Text="{Binding Path=PhoneNumber, Mode=OneWay}"  HorizontalAlignment="Left" Height="23" Margin="58,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
+                                    <TextBox x:Name="EdytowanieEmail"  HorizontalAlignment="Left" Height="23" Margin="58,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
+                                    <Button x:Name="EdytowaniePrzycisk" Content="Edytuj" HorizontalAlignment="Left" Margin="141,189,0,0" VerticalAlignment="Top" Width="75" Click="EditContact_Click" />
                                 </Grid>
                             </GroupBox>
                         </Canvas>
-                        <Canvas x:Name="CanGb4" Background="#FFFFDAAE" Height="209" Canvas.Left="577" Width="258" Canvas.Top="22" >
+                        <Canvas x:Name="showContactDetails" Background="#FFFFDAAE" Height="205" Canvas.Left="150" Canvas.Top="80" Width="255" Visibility="Hidden" >
                             <GroupBox Header="Podgląd" Canvas.Left="10" Canvas.Top="10" Height="190" Width="238">
                                 <Grid>
-                                    <TextBox x:Name="PodgladImie" Text="{Binding Path=imie, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="58,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
+                                    <TextBox x:Name="PodgladImie" Text="{Binding Path=FirstName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="58,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
                                     <Label Content="Imie:" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Height="23" Width="38"/>
                                     <Label Content="Nazwisko:" HorizontalAlignment="Left" Margin="0,38,0,0" VerticalAlignment="Top" Width="62"/>
-                                    <TextBox x:Name="PodgladNazwisko" Text="{Binding Path=nazwisko, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="67,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="156"/>
+                                    <TextBox x:Name="PodgladNazwisko" Text="{Binding Path=LastName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="67,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="156"/>
                                     <Label Content="Ksywka:"  HorizontalAlignment="Left" Margin="0,0,0,73" VerticalAlignment="Bottom" Width="53"/>
-                                    <TextBox x:Name="PodgladKsywka" Text="{Binding Path=ksywa, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="58,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
+                                    <TextBox x:Name="PodgladKsywka" Text="{Binding Path=Nick, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  HorizontalAlignment="Left" Height="23" Margin="58,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
                                     <Label Content="Telefon:" HorizontalAlignment="Left" Margin="0,100,0,0" VerticalAlignment="Top" Width="53"/>
                                     <Label Content="E-mail:" HorizontalAlignment="Left" Margin="0,131,0,0" VerticalAlignment="Top" Width="53"/>
-                                    <TextBox x:Name="PodgladTelefon" Text="{Binding Path=telefon, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="61,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
-                                    <TextBox x:Name="PodgladEmail" Text="{Binding Path=mail, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="58,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
-
+                                    <TextBox x:Name="PodgladTelefon" Text="{Binding Path=Email, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="61,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
+                                    <TextBox x:Name="PodgladEmail" Text="{Binding Path=PhoneNumber, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="58,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165"/>
                                 </Grid>
                             </GroupBox>
                         </Canvas>
-                        <Label Background="#FFFFF2C5" Height="919" Width="56" Canvas.Left="-7" MouseLeftButtonDown="Label_MouseLeftButtonDown_1">
+                        <Label Background="#CEF2D6" Height="919" Width="56" Canvas.Left="-7" MouseLeftButtonDown="ClearActivityButtonsContactPanel">
                             <Grid Height="338" Width="46">
-                                <Button Height="32" Width="34" Command="{x:Static local:PrzyciskiKontakty.Wyszukaj}" Margin="10,0,2,306" RenderTransformOrigin="0.206,-3.906" >
-                                    <Image Height="22" Source="loopa.png" Stretch="Fill" Width="24"/>
+                                <Button  Height="32" Width="34" Margin="10,0,2,306" RenderTransformOrigin="0.206,-3.906" Command="{x:Static local:ContactPanelCommands.Search}" >
+                                    <Image Height="22"  Stretch="Fill" Width="24" RenderTransformOrigin="1,1" Source="pictures/searchContact.png"/>
                                 </Button>
-                                <Button Height="32" Width="34" Command="{x:Static local:PrzyciskiKontakty.Dodaj}" Margin="10,60,2,246">
-                                    <Image Height="22" Source="PLUS..png" Stretch="Fill" Width="24"/>
+                                <Button Height="32" Width="34"  Margin="10,60,2,246" Command="{x:Static local:ContactPanelCommands.Add}">
+                                    <Image Height="22"  Stretch="Fill" Width="24" Source="pictures/addContact.png"/>
                                 </Button>
-                                <Button x:Name="BditButt" Command="{x:Static local:PrzyciskiKontakty.Edytuj}" Height="32" Width="34" Margin="10,120,2,186" >
-                                    <Image Height="25" Source="edyt.png" Stretch="Fill" Width="25"/>
+                                <Button x:Name="BditButt"  Height="32" Width="34" Margin="10,120,2,186" Command="{x:Static local:ContactPanelCommands.Edit}">
+                                    <Image Height="25"  Stretch="Fill" Width="25" Source="pictures/editContact.png"/>
                                 </Button>
-                                <Button x:Name="ShowClick" Command="{x:Static local:PrzyciskiKontakty.Podglad}" Height="32" Width="34" Margin="10,180,2,126" >
-                                    <Image Height="50" Source="podglad kopia.png" Stretch="Fill" Width="50"/>
+                                <Button x:Name="ShowClick"  Height="32" Width="34" Margin="10,180,2,126" Command="{x:Static local:ContactPanelCommands.Show}">
+                                    <Image Height="32"  Stretch="Fill" Width="34" Source="pictures/detailsContact.png"/>
                                 </Button>
-                                <Button x:Name="UsuńButt" Height="32" Width="34" Margin="10,240,2,66" RenderTransformOrigin="0.471,0.562" Command="{x:Static local:PrzyciskiKontakty.Usun}">
-                                    <Image Height="22" Source="minus.png" Stretch="Fill" Width="24"/>
+                                <Button x:Name="UsuńButt" Height="32" Width="34" Margin="10,240,2,66" RenderTransformOrigin="0.471,0.562" Command="{x:Static local:ContactPanelCommands.Delete}" Click="DeleteContact_Click" >
+                                    <Image Height="22"  Stretch="Fill" Width="24" Source="pictures/deleteContact.png"/>
                                 </Button>
                             </Grid>
                         </Label>
@@ -310,6 +321,61 @@
 
                 </Grid>
             </TabItem>
+
+            <TabItem Name="pogoda" Header="Pogoda" >
+                <Grid>
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock FontSize="20" HorizontalAlignment="Center" Margin="10"  Text="Pogoda na dziś"></TextBlock>
+                        <WrapPanel>
+                            <TextBlock  Margin="20" Text="Szukane miasto: "></TextBlock>
+                            <TextBox x:Name="textBox_szukaneMiasto" Height="23" Margin="10" Width="152"/>
+                            <Button Margin="10"  Width="30" Height="23" Click="SzukajMiasta" IsEnabled="{Binding ElementName=textBox_szukaneMiasto, Path=Text.Length}" >
+                                <Image Source="pictures/lupa.png" />
+                            </Button>
+                        </WrapPanel>
+                        <TextBlock FontSize="20" x:Name="tb_miasto" Margin="10" Text="Białystok" HorizontalAlignment="Center"/>
+                        <WrapPanel>
+                            <TextBlock FontSize="20" Margin="10" Text="75°F" HorizontalAlignment="Left"/>
+                            <Image x:Name="img_obrazek_pogody" Height="40"  Width="40" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="tb_temperatura" FontSize="20" Margin="90,10" Text="25°C" HorizontalAlignment="Right"/>
+                        </WrapPanel>
+
+                        <Grid ShowGridLines="True" Height="100">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock FontSize="15" Text="Max temp" Grid.Row="0" Grid.Column="0"/>
+                            <TextBlock FontSize="15" Text="Cisnienie :" Grid.Row="1" Grid.Column="0"/>
+                            <TextBlock FontSize="15" Text="Wiatr :" Grid.Row="2" Grid.Column="0"/>
+
+                            <TextBlock x:Name="tb_max_temperatura" FontSize="15"  Text="30°C" Grid.Row="0" Grid.ColumnSpan="2" Height="34" Margin="87,0,0.4,0" Grid.RowSpan="2" VerticalAlignment="Top"/>
+                            <TextBlock x:Name="tb_predkosc_wiatru" FontSize="15" Text="11 km/h" Grid.Row="1" Grid.Column="1" />
+                            <TextBlock x:Name="tb_cisnienie" FontSize="15" Text="1020,6 hPa" Grid.Row="2" Grid.Column="1"/>
+
+                            <TextBlock FontSize="15" Text="Min temp:" Grid.Row="0" Grid.Column="2"/>
+                            <TextBlock FontSize="15" Text="Wilgotnosc:" Grid.Row="1" Grid.Column="2"/>
+                            <TextBlock FontSize="15" Text="Zachmurzenie :" Grid.Row="2" Grid.Column="2"/>
+
+                            <TextBlock x:Name="tb_min_temperatura"  FontSize="15" Text="0°C" Grid.Row="0" Grid.Column="3" />
+                            <TextBlock x:Name="tb_wilgotnosc" FontSize="15" Text="20%"  Grid.Row="1" Grid.Column="3"/>
+                            <TextBlock x:Name="tb_zachmurzenie" FontSize="15" Text="5%" Grid.Row="2" Grid.Column="3"/>
+
+                        </Grid>
+                    </StackPanel>
+                    
+                    <Label x:Name="lbl_pogoda_informacja_o_bledzie" Visibility="Hidden" Content="Informacja o bledzie " Grid.Column="1" HorizontalAlignment="Left" Margin="156,35,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+
             <TabItem Name="ustawienia" Header="Ustawienia">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -337,11 +403,11 @@
                         <ColumnDefinition Width="97"/>
                         <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox Grid.Column="1" Header="Ustawienia konta" Grid.Row="1" RenderTransformOrigin="-0.408,-1.739" Grid.ColumnSpan="4">
+                    <GroupBox Grid.Column="1" Header="Ustawienia" Grid.Row="1" RenderTransformOrigin="-0.408,-1.739" Grid.ColumnSpan="4">
                         <Grid>
                             <Label Content="Nowe hasło:" HorizontalAlignment="Left" Margin="0,45,0,0" VerticalAlignment="Top" Width="82"/>
                             <Label Content="Powtórz nowe hasło:" HorizontalAlignment="Left" Margin="0,80,0,0" VerticalAlignment="Top" Width="119"/>
-                            <Label Content="Stare hasło:" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="82"/>
+                            <Label Content= "Aktualne hasło:" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="96"/>
                             <TextBox x:Name="HasloStareTextBox" HorizontalAlignment="Left" Height="23" Margin="127,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="218"/>
                             <TextBox x:Name="HasloNoweTextBox" HorizontalAlignment="Left" Height="23" Margin="127,48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="218"/>
                             <TextBox x:Name="HasloPowtTextBox" HorizontalAlignment="Left" Height="23" Margin="127,83,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="218"/>
@@ -349,7 +415,7 @@
                     </GroupBox>
 
                     <Button x:Name="ZapiszButt" Content="Zapisz zmiany" Grid.Column="6" Grid.Row="11" 
-                            Command="{x:Static local:UstawieniaPrzycisk.Zmiana_Ustawien}"/>
+                          Command="{x:Static local:UstawieniaPrzycisk.Zmiana_Ustawien}"   />
                     <Label Content="Imie:" Grid.Column="2" Grid.Row="3"/>
                     <Label Content="Nazwisko:" Grid.Column="2" Grid.Row="5"/>
                     <Label Content="Telefon:" Grid.Column="2" Grid.Row="7"/>
@@ -362,41 +428,79 @@
                 </Grid>
             </TabItem>
 
+            <TabItem Header="Galeria Zdjęc">
+                <Grid  DataContext="{Binding ElementName=listbox_contact, Path=SelectedItem}" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="9"/>
+                        <RowDefinition Height="313*"/>
+                        <RowDefinition Height="16"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="56.8"/>
+                        <ColumnDefinition Width="11.2"/>
+                        <ColumnDefinition Width="13.6"/>
+                        <ColumnDefinition Width="129*"/>
+                        <ColumnDefinition Width="304*"/>
+                        <ColumnDefinition Width="48"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView  Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch" Margin="0.4,0.2,0.4,15.6" x:Name="listbox_picture"
+                  VerticalAlignment="Stretch" FontSize="13"  Grid.RowSpan="2" Grid.ColumnSpan="2">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="auto" Header="Zdjęcie"
+                                    CellTemplate="{StaticResource PhotoCell}" />
+                                <GridViewColumn Width="auto" Header="Opis zdjecia"
+                                    DisplayMemberBinding="{Binding DescPicture}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Canvas Grid.ColumnSpan="6" Grid.RowSpan="3" Margin="0,0,0.4,-0.4" >
+                        <Canvas x:Name="addPictureDetails" Background="#FFFFDAAE" Height="267" Canvas.Left="150" Canvas.Top="80" Width="255">
+                            <GroupBox Header="Dodawanie" Canvas.Left="10" Canvas.Top="10" Height="243" Width="238">
+                                <Grid>
+                                    <Label Content="Dodaj opis:" Margin="10,10,10,184.8"/>
+                                    <TextBox x:Name="DescPictureTextBox" Margin="10,40,10,110" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+                                    <Label Content="Zdjęcie:" HorizontalAlignment="Left" Margin="10,119,0,0" VerticalAlignment="Top" Width="53" RenderTransformOrigin="0.509,-0.556"/>
+                                    <Button x:Name="AddPictureLink" Content="Przeglądaj..." HorizontalAlignment="Left" Margin="68,125,0,0" VerticalAlignment="Top" Width="94" Click="AddPictureLink_Click"/>
+                                    <Label x:Name="PictureLink" Content="{Binding Path=SourcePucture}" RenderTransformOrigin="2.67,0.679" Margin="10,150,9.6,36.8"/>
+                                    <Button x:Name="AddPictureButton" Content="Dodaj" HorizontalAlignment="Left" Margin="141,189,0,0" VerticalAlignment="Top" Width="75" Click="AddPicture_Click"/>
+                                </Grid>
+                            </GroupBox>
+                        </Canvas>
+                        <Label Background="#CEF2D6" Height="918" Width="56" Canvas.Left="-7" MouseLeftButtonDown="ClearActivityButtonsPicturePanel">
+                            <Grid Height="338" Width="46">
+                                <Button Height="32" Width="34"  Margin="10,60,2,246" Command="{x:Static local:PictureCommand.Add}">
+                                    <Image Height="22"  Stretch="Fill" Width="24" Source="pictures/addContact.png"/>
+                                </Button>
+                                <Button Height="32" Width="34" Margin="10,240,2,66" RenderTransformOrigin="0.471,0.562" Command="{x:Static local:PictureCommand.Delete}" Click="DeletePicture_Click" >
+                                    <Image Height="22"  Stretch="Fill" Width="24" Source="pictures/deleteContact.png"/>
+                                </Button>
+                            </Grid>
+                        </Label>
+                    </Canvas>
+                </Grid>
+            </TabItem>
+
 
         </TabControl>
     </Grid>
+
     <Window.CommandBindings>
+
         <CommandBinding Command="{x:Static local:UstawieniaPrzycisk.Zmiana_Ustawien}"
                         Executed="ZapiszButt_Click"
                         />
-        <CommandBinding Command="{x:Static local:PrzyciskiNotatek.Edytuj}"
-                    Executed="Edytuj"
+        <CommandBinding Command="{x:Static local:NoteButton.Edytuj}"
+                    Executed="Edit"
                     CanExecute="czyEdytowac"
                     />
-        <CommandBinding Command="{x:Static local:PrzyciskiNotatek.Usun}"
+        <CommandBinding Command="{x:Static local:NoteButton.Usun}"
                         Executed="Usun"
                         CanExecute="czyUsunac"
                         />
-        <CommandBinding Command="{x:Static local:PrzyciskiNotatek.Drukuj}"
+        <CommandBinding Command="{x:Static local:NoteButton.Drukuj}"
                         Executed="Drukuj"
                         CanExecute="czyDrukowac"
-                        />
-
-        <CommandBinding Command="{x:Static local:PrzyciskiKontakty.Dodaj}" 
-                        Executed="Dodanie_kontaktu"
-                        />
-        <CommandBinding Command="{x:Static local:PrzyciskiKontakty.Wyszukaj}" 
-                        Executed="Wyszukanie_kontaktu"
-                        />
-        <CommandBinding Command="{x:Static local:PrzyciskiKontakty.Edytuj}" 
-                        Executed="Edycja_kontaktu"
-                        />
-        <CommandBinding Command="{x:Static local:PrzyciskiKontakty.Podglad}" 
-                        Executed="Podglad_kontaktu"
-                        />
-        <CommandBinding Command="{x:Static local:PrzyciskiKontakty.Usun}" 
-                        Executed="Usuniecie_kontaktu"
-                        CanExecute="Usuniecie_kontaktu_aktywacja"
                         />
 
         <CommandBinding Command="{x:Static local:PrzyciskiWydarzenia.Edytuj}" 
@@ -408,6 +512,22 @@
                         CanExecute="Usuniecie_aktywacja"
                         />
 
+        <CommandBinding Command="{x:Static local:ContactPanelCommands.Add}"
+                        Executed="AddContact" />
+        <CommandBinding Command="{x:Static local:ContactPanelCommands.Edit}"
+                        Executed="EditContact"
+                        CanExecute="EditContact_Set"/>
+        <CommandBinding Command="{x:Static local:ContactPanelCommands.Show}"
+                        Executed="ShowContact" 
+                        CanExecute="ShowContact_Set"/>
+        <CommandBinding Command="{x:Static local:ContactPanelCommands.Delete}"
+                        CanExecute="DeleteContact_Set"/>
+        <CommandBinding Command="{x:Static local:ContactPanelCommands.Search}"
+                        Executed="SearchContact" />
+        <CommandBinding Command="{x:Static local:PictureCommand.Add}"
+                        Executed="AddPicture" />
+        <CommandBinding Command="{x:Static local:PictureCommand.Delete}"
+                        CanExecute="DeletePicture_Set"/>
 
 
 
