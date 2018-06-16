@@ -96,8 +96,9 @@ namespace notat
                 try
                 {
                     System.IO.File.Copy(sourcePicture, System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + @"\galeriaZdjec\" + login + @"\" + nazwa_pliku);
-                    DescPictureTextBox.Clear();
+                    pictureList.Add( new Picture(DescPictureTextBox.Text, sourcePicture));
                     PictureLink.Content = "";
+                    DescPictureTextBox.Clear();
 
                     addPictureDetails.Visibility = Visibility.Hidden;
                 }
@@ -112,7 +113,6 @@ namespace notat
             {
                  MessageBox.Show("Nie wybrales zdjecia");
             }
-            pictureList.Add( new Picture(DescPictureTextBox.Text, sourcePicture));
 
             zapis_zdjec(ZdjeciaPlik);
 

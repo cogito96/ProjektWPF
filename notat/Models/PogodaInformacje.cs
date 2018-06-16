@@ -37,19 +37,6 @@ namespace notat.Models
             public int humidity { get; set; }
             public double pressure { get; set; }
 
-            //public double temp { get; set; }
-            //public double Temp
-            //{
-            //    get { return temp; }
-            //    set
-            //    {
-            //        temp = value;
-            //        OnPropertyChanged("Temp");
-            //    }
-            //}
-
-
-
             public event PropertyChangedEventHandler PropertyChanged;
 
             protected void OnPropertyChanged(string name)
